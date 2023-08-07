@@ -1,22 +1,26 @@
 import { Player } from './factory.js'
 import * as DOM from './dom.js'
 
-function Game(){
-    this.player1 = new Player({name: 'player', isAi: true})
-    this.player2 = new Player({name: 'computer', isAi: true})
+function Game() {
+    this.player1 = new Player({ name: 'player', isAi: false })
+    this.player2 = new Player({ name: 'computer', isAi: false })
     this.round = this.player1
     this.switchRound = () => {
         this.round = this.round === this.player1 ? this.player2 : this.player1
         console.log('switch to', this.round.name)
     }
     this.checkGameEnd = () => {
-        if(this.player1.gameboard.allSunk()){
+        if (this.player1.gameboard.allSunk()) {
             DOM.updateMsg(`Winner : ${this.player2.name}`)
             this.round = null // game stop.No more click
+            console.log('game end. winner is', this.player2.name)
+            return
         }
-        if(this.player2.gameboard.allSunk()){
+        if (this.player2.gameboard.allSunk()) {
             DOM.updateMsg(`Winner : ${this.player1.name}`)
             this.round = null // game stop.No more click
+            console.log('game end. winner is', this.player1.name)
+            return
         }
     }
     this.render = () => DOM.render(this)
@@ -29,9 +33,9 @@ function Game(){
 
                 let x = parseInt(node.getAttribute('colidx'))
                 let y = parseInt(node.getAttribute('rowidx'))
-                if(this.round === this.player1){
+                if (this.round === this.player1) {
                     let isValidAttack = this.player2.gameboard.receiveAttack([x, y])
-                    if(isValidAttack){
+                    if (isValidAttack) {
                         this.switchRound()
                         this.render()
                         this.addEvent()
@@ -48,9 +52,9 @@ function Game(){
                 console.log('player 2 click on player 1"s board')
                 let x = parseInt(node.getAttribute('colidx'))
                 let y = parseInt(node.getAttribute('rowidx'))
-                if(this.round === this.player2){
+                if (this.round === this.player2) {
                     let isValidAttack = this.player1.gameboard.receiveAttack([x, y])
-                    if(isValidAttack){
+                    if (isValidAttack) {
                         this.switchRound()
                         this.render()
                         this.addEvent()
@@ -61,39 +65,40 @@ function Game(){
             })
         })
     }
-    this.checkIfAI = () => {
-        // if(! this.player2.isAi) return
-        console.log(this.round)
-        if(! this.round.isAi) return
+    this.checkIfAI = async () => {
+        if (this.round === null) return
+        if (!this.round.isAi) return
         // is Ai, get coordinate and simulate click
-        let coord = this.round.generateAIMove()
-        let [ rowIdx, colIdx ] = coordToBoard(coord)
+        let opponent = this.round === this.player1 ? this.player2 : this.player1
+        let coord = this.round.generateAIMove(opponent)
+        let [rowIdx, colIdx] = coordToBoard(coord)
         let cellName = this.round === this.player1 ? 'enemyCell' : 'myCell'
         let cell = document.querySelector(`.${cellName}[rowidx='${rowIdx}'][colidx='${colIdx}']`)
-        cell.click()
+        // cell.click()
+        await setTimeout(() => cell.click(), 100);
     }
-    
+
     this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
     this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
     // this.player1.gameboard.placeShip([8, 6], 'horizontal', 2)
     // this.player1.gameboard.placeShip([7, 1], 'vertical', 5)
     // this.player1.gameboard.placeShip([1, 3], 'vertical', 2)
     // this.player1.gameboard.placeShip([1, 6], 'vertical', 3)
-    
+
     this.player2.gameboard.placeShip([1, 1], 'horizontal', 3)
     this.player2.gameboard.placeShip([3, 8], 'horizontal', 4)
     // this.player2.gameboard.placeShip([8, 6], 'horizontal', 2)
     // this.player2.gameboard.placeShip([7, 1], 'vertical', 5)
     // this.player2.gameboard.placeShip([1, 3], 'vertical', 2)
     // this.player2.gameboard.placeShip([1, 6], 'vertical', 3)
-    
+
     // player1.gameboard.missedAttack.push([0, 1])
     // player1.gameboard.missedAttack.push([0, 2])
     // player1.gameboard.missedAttack.push([0, 3])
     // player1.gameboard.correctAttack.push([1, 1])
     // player1.gameboard.correctAttack.push([2, 1])
     // player1.gameboard.correctAttack.push([3, 1])
-    
+
     // player2.gameboard.missedAttack.push([0, 1])
     // player2.gameboard.missedAttack.push([0, 2])
     // player2.gameboard.missedAttack.push([0, 3])

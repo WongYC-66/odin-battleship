@@ -53,7 +53,7 @@ function GameBoard() {
         // reject if history exist
         let history = [...this.correctAttack, ...this.missedAttack]
         let isRepeated = history.some(his => coord[0] === his[0] && coord[1] === his[1])
-        if (isRepeated){
+        if (isRepeated) {
             console.log('history exists. click')
             return false
         }
@@ -75,23 +75,24 @@ function GameBoard() {
 
 }
 
-function Player({name, isAi}) {
+function Player({ name, isAi }) {
     this.name = name
     this.gameboard = new GameBoard()
     // this.attackingIndex = []
     this.isAi = isAi
-    this.generateAIMove = () => {
+    this.generateAIMove = (player) => {
         if (!this.isAi) return
         let x, y,
-            history = [...this.gameboard.correctAttack, ...this.gameboard.missedAttack]
+            history = [...player.gameboard.correctAttack, ...player.gameboard.missedAttack]
         while (true) {
             x = Math.floor(Math.random() * 10)
             y = Math.floor(Math.random() * 10)
-            let isRepeated = history.some(coord => coord[0] === x && coord[1] === y)
+            let isRepeated = history.some(his => his[0] === x && his[1] === y)
             if (!isRepeated) break
-            console.log(x,y, 'is repeated')
+            // console.log(x, y, 'is repeated')
         }
-        console.log(x,y, 'not repeated')
+        // console.log(history)
+        // console.log(x, y, 'not repeated')
         return [x, y]
     }
 }
