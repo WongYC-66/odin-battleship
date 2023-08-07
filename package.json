@@ -1,0 +1,17 @@
+{
+  "name": "odin-battleship",
+  "version": "1.0.0",
+  "description": "A simple game with javascript and use Jest for TTD",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "babel-jest": "^29.6.2"
+  }
+}
