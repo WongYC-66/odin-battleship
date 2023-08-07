@@ -1,0 +1,76 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#container{
+    border: 1px solid black;
+    height: 97vh;
+    width: 100vw;
+    /* overflow: hidden; */
+}
+
+h1{
+    text-align: center;
+}
+
+.gameDiv{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    /*  */
+    padding: 10px;
+}
+
+.playerDiv, .enemyDiv{
+    background-color: #1f2136;
+    border: 1px solid black;
+    padding: 5px;
+    /*  */
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+}
+
+.cell{
+    background-color: rgb(255, 237, 216);
+    width: min(50px, 3.5vw);
+    height: min(50px, 7vh);
+}
+.cell:hover{
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    border: 3px solid yellow;
+    background-color: yellow;
+}
+
+.myCell.miss-attacked{
+    background-color: rgb(130, 123, 123);
+}
+.enemyCell.miss-attacked{
+    background-color: rgb(130, 123, 123);
+}
+.myCell.ship-area{
+    background-color: greenyellow;
+}
+.myCell.ship-area.correct-attacked::before{
+    content: '*';
+    color: red;
+    font-size: 2rem;
+    /*  */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.enemyCell.ship-area{
+    /* background-color: orangered; */
+}
+.enemyCell.ship-area.correct-attacked{
+    background-color: orangered;
+}
+
+footer{
+    text-align: center;
+}
