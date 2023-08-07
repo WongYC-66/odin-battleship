@@ -75,12 +75,12 @@ function GameBoard() {
 
 }
 
-function Player(name) {
+function Player({name, isAi}) {
     this.name = name
     this.gameboard = new GameBoard()
     // this.attackingIndex = []
-    this.isAi = false
-    this.makeAiMove = () => {
+    this.isAi = isAi
+    this.generateAIMove = () => {
         if (!this.isAi) return
         let x, y,
             history = [...this.gameboard.correctAttack, ...this.gameboard.missedAttack]
@@ -89,9 +89,10 @@ function Player(name) {
             y = Math.floor(Math.random() * 10)
             let isRepeated = history.some(coord => coord[0] === x && coord[1] === y)
             if (!isRepeated) break
+            console.log(x,y, 'is repeated')
         }
-        // make ai click one button
-        // this.attackingIndex.push([x, y])
+        console.log(x,y, 'not repeated')
+        return [x, y]
     }
 }
 

@@ -2,8 +2,8 @@ import { Player } from './factory.js'
 import * as DOM from './dom.js'
 
 function Game(){
-    this.player1 = new Player('player')
-    this.player2 = new Player('computer')
+    this.player1 = new Player({name: 'player', isAi: true})
+    this.player2 = new Player({name: 'computer', isAi: true})
     this.round = this.player1
     this.switchRound = () => {
         this.round = this.round === this.player1 ? this.player2 : this.player1
@@ -36,6 +36,7 @@ function Game(){
                         this.render()
                         this.addEvent()
                         this.checkGameEnd()
+                        this.checkIfAI() // check n activate AI
                     }
                 }
             })
@@ -54,12 +55,23 @@ function Game(){
                         this.render()
                         this.addEvent()
                         this.checkGameEnd()
+                        this.checkIfAI() // check n activate AI
                     }
                 }
             })
         })
     }
-
+    this.checkIfAI = () => {
+        // if(! this.player2.isAi) return
+        console.log(this.round)
+        if(! this.round.isAi) return
+        // is Ai, get coordinate and simulate click
+        let coord = this.round.generateAIMove()
+        let [ rowIdx, colIdx ] = coordToBoard(coord)
+        let cellName = this.round === this.player1 ? 'enemyCell' : 'myCell'
+        let cell = document.querySelector(`.${cellName}[rowidx='${rowIdx}'][colidx='${colIdx}']`)
+        cell.click()
+    }
     
     this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
     this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
@@ -90,6 +102,10 @@ function Game(){
     // player2.gameboard.correctAttack.push([3, 1])
     this.render()
     this.addEvent()
+}
+
+function coordToBoard(coord) {
+    return [coord[1], coord[0]]
 }
 
 export { Game }
