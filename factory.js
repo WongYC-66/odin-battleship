@@ -25,17 +25,17 @@ export function GameBoard(){
         let [rowIdx, colIdx] = coordToBoard(coord)
         const newShip = new Ship(size, 0, false)
         if(dir == 'horizontal'){
-            console.log('placing horizontally')
-            if(colIdx + size - 1 > MAX_COL) return console.log('Cannot place here, boundary')
+            // console.log('placing horizontally')
+            if(colIdx + size - 1 > MAX_COL) return // console.log('Cannot place here, boundary')
             let rowCell = this.board[rowIdx].slice(colIdx, colIdx + size)
             let isEmpty = rowCell.every(cell => cell === ' ')
             if(! isEmpty) return console.log('Cannot. Other ship is here.')
             for(let j = colIdx ; j < colIdx + size; j++){
-                this.board[rowIdx][j] = 'o'   // assign ship obj to board
+                this.board[rowIdx][j] = newShip   // assign ship obj to board
             }
         } else if(dir == 'vertical'){
-            console.log('placing vertically')
-            if(rowIdx + size - 1 > MAX_ROW) return console.log('Cannot place here, boundary')
+            // console.log('placing vertically')
+            if(rowIdx + size - 1 > MAX_ROW) return // console.log('Cannot place here, boundary')
             let colCell = []
             for(let i = rowIdx ; i < rowIdx + size; i++){
                 colCell.push(this.board[i][colIdx])
@@ -43,27 +43,35 @@ export function GameBoard(){
             let isEmpty = colCell.every(cell => cell === ' ')
             if(! isEmpty) return console.log('Cannot. Other ship is here.')
             for(let i = rowIdx ; i < rowIdx + size ; i++){
-                this.board[i][colIdx] = 'o'   // assign ship obj to board
+                this.board[i][colIdx] = newShip   // assign ship obj to board
             }
         }
         this.allShip.push(newShip)
         
     }
     this.receiveAttack = (coord) => {
-        let [x, y] = coordToBoard(coord)
-        let isHit = this.board[x][y] !== ' '
+        let [rowIdx, colIdx] = coordToBoard(coord)
+        let isHit = this.board[rowIdx][colIdx] !== ' '
         if(! isHit){
             this.missedAttack.push(coord)
             return
         } 
-        let foundShip = this.board[x][y]
+        let foundShip = this.board[rowIdx][colIdx]
         foundShip.hit()
         this.correctAttack.push(coord)
+        // console.log(foundShip)
+        // console.log(this.correctAttack)
+        // console.log(this.missedAttack)
     }
     this.allSunk = () => {
         return this.allShip.every(ship => ship.sunk)
     }
 
+}
+
+export function Player(name){
+    this.name = name
+    this.gameboard = new GameBoard()
 }
 
 function coordToBoard(coord){
