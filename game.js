@@ -1,5 +1,6 @@
 import { Player } from './factory.js'
 import * as DOM from './dom.js'
+import * as DRAG_MODULE from './drag.js'
 
 function Game() {
     this.player1 = new Player({ name: 'player', isAi: false })
@@ -80,33 +81,13 @@ function Game() {
 
     this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
     this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
-    // this.player1.gameboard.placeShip([8, 6], 'horizontal', 2)
-    // this.player1.gameboard.placeShip([7, 1], 'vertical', 5)
-    // this.player1.gameboard.placeShip([1, 3], 'vertical', 2)
-    // this.player1.gameboard.placeShip([1, 6], 'vertical', 3)
 
     this.player2.gameboard.placeShip([1, 1], 'horizontal', 3)
     this.player2.gameboard.placeShip([3, 8], 'horizontal', 4)
-    // this.player2.gameboard.placeShip([8, 6], 'horizontal', 2)
-    // this.player2.gameboard.placeShip([7, 1], 'vertical', 5)
-    // this.player2.gameboard.placeShip([1, 3], 'vertical', 2)
-    // this.player2.gameboard.placeShip([1, 6], 'vertical', 3)
 
-    // player1.gameboard.missedAttack.push([0, 1])
-    // player1.gameboard.missedAttack.push([0, 2])
-    // player1.gameboard.missedAttack.push([0, 3])
-    // player1.gameboard.correctAttack.push([1, 1])
-    // player1.gameboard.correctAttack.push([2, 1])
-    // player1.gameboard.correctAttack.push([3, 1])
-
-    // player2.gameboard.missedAttack.push([0, 1])
-    // player2.gameboard.missedAttack.push([0, 2])
-    // player2.gameboard.missedAttack.push([0, 3])
-    // player2.gameboard.correctAttack.push([1, 1])
-    // player2.gameboard.correctAttack.push([2, 1])
-    // player2.gameboard.correctAttack.push([3, 1])
     this.render()
     this.addEvent()
+    DRAG_MODULE.initialise()
 }
 
 function coordToBoard(coord) {

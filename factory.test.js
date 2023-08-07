@@ -114,8 +114,8 @@ test('can report all ships are sunk', () => {
 });
 
 test('can create player and gameboard', () => {
-    const player1 = new Player('foo')
-    const player2 = new Player('bar')
+    const player1 = new Player({name :'foo'})
+    const player2 = new Player({name :'bar'})
     expect(player1.name).toEqual('foo') 
     expect(player2.name).toEqual('bar') 
     expect(player1.gameboard instanceof GameBoard).toEqual(true) 
