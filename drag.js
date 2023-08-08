@@ -1,4 +1,5 @@
 let beingDrag = undefined
+let beingDragOver = undefined
 let dropResult = undefined
 
 function initialise(game) {
@@ -10,6 +11,7 @@ function initialise(game) {
     */
 
     let div = document.querySelector('.dragDiv')
+    div.innerHTML = ''
     let img1 = createImgWithSrc('./img/size5.png', 'length5', 5, 'horizontal')
     let img2 = createImgWithSrc('./img/size4.png', 'length4', 4, 'horizontal')
     let img3 = createImgWithSrc('./img/size3.png', 'length3', 3, 'horizontal')
@@ -47,9 +49,14 @@ function addCellEvent(game) {
     // cell droppable
     document.querySelectorAll('.myCell.cell').forEach(el => {
         el.addEventListener('dragenter', function (e) {
+            // remove shadow
+            document.querySelectorAll('.myCell').forEach(cell => {
+                cell.classList.remove('before-place')
+            })
             // add drag shadow
             e.preventDefault()
-            console.log('drag enter')
+            beingDragOver = this
+            // console.log('drag enter')
             const size = Number(beingDrag.getAttribute('length'))
             const isHorizontal = beingDrag.classList.contains('horizontal')
             const rowIdx = Number(this.getAttribute('rowidx'))
@@ -70,10 +77,7 @@ function addCellEvent(game) {
             }
         })
         el.addEventListener('dragleave', function(e){
-            // remove shadow
-            document.querySelectorAll('.myCell').forEach(cell => {
-                cell.classList.remove('before-place')
-            })
+            e.preventDefault()
         })
         el.addEventListener('dragover', function (e) {
             e.preventDefault() // important
@@ -81,12 +85,12 @@ function addCellEvent(game) {
         el.addEventListener('drop', function (e) {
             // place event
             e.preventDefault()
-            console.log('drop trigger')
+            // console.log('drop trigger')
             const size = Number(e.dataTransfer.getData('size'))
             const isHorizontal = e.dataTransfer.getData('horizontal')
             const dir = isHorizontal ? 'horizontal' : 'vertical'
-            const rowIdx = Number(this.getAttribute('rowidx'))
-            const colIdx = Number(this.getAttribute('colidx'))
+            const rowIdx = Number(beingDragOver.getAttribute('rowidx'))
+            const colIdx = Number(beingDragOver.getAttribute('colidx'))
             dropResult = game.player1.gameboard.placeShip([colIdx, rowIdx], dir, size)
             game.render()
             game.addEvent()

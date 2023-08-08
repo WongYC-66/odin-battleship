@@ -49,9 +49,15 @@ function render(game) {
         let el = document.querySelector(`.enemyCell[rowidx="${rowIdx}"][colidx="${colIdx}"]`)
         el.classList.add('correct-attacked')
     })
+    // mask player2 at beginning
+    if (game.gameStatus == 'before-start') toggleEnemyMask()
 }
 
-function updateMsg(str){
+function toggleEnemyMask() {
+    document.querySelectorAll('.enemyCell').forEach(cell => cell.classList.toggle('mask'))
+}
+
+function updateMsg(str) {
     document.querySelector('.messageDiv').textContent = str
 }
 
@@ -59,4 +65,4 @@ function coordToBoard(coord) {
     return [coord[1], coord[0]]
 }
 
-export { render, updateMsg }
+export { render, updateMsg, toggleEnemyMask }

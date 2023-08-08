@@ -4,25 +4,39 @@ import * as DRAG_MODULE from './drag.js'
 
 function Game() {
     this.player1 = new Player({ name: 'player', isAi: false })
-    this.player2 = new Player({ name: 'computer', isAi: false })
-    this.round = this.player1
+    this.player2 = new Player({ name: 'computer', isAi: true })
+    this.round = null
+    this.gameStatus = 'before-start'
     this.switchRound = () => {
         this.round = this.round === this.player1 ? this.player2 : this.player1
         console.log('switch to', this.round.name)
     }
     this.checkGameEnd = () => {
-        if (this.player1.gameboard.allSunk()) {
-            DOM.updateMsg(`Winner : ${this.player2.name}`)
-            this.round = null // game stop.No more click
-            console.log('game end. winner is', this.player2.name)
-            return
-        }
-        if (this.player2.gameboard.allSunk()) {
-            DOM.updateMsg(`Winner : ${this.player1.name}`)
-            this.round = null // game stop.No more click
-            console.log('game end. winner is', this.player1.name)
-            return
-        }
+        [this.player1, this.player2].forEach(p => {
+            if (this.gameStatus == 'end') return
+            if (p.gameboard.allSunk()) {
+                let opponent = p === this.player1 ? player2 : this.player1
+                DOM.updateMsg(`Winner : ${opponent.name}`)
+                this.round = null // game stop.No more click
+                this.gameStatus = 'end'
+                console.log('game end. winner is', opponent.name)
+                return
+            }
+        })
+        // if (this.player1.gameboard.allSunk()) {
+        //     DOM.updateMsg(`Winner : ${this.player2.name}`)
+        //     this.round = null // game stop.No more click
+        //     this.gameStatus = 'end'
+        //     console.log('game end. winner is', this.player2.name)
+        //     return
+        // }
+        // if (this.player2.gameboard.allSunk()) {
+        //     DOM.updateMsg(`Winner : ${this.player1.name}`)
+        //     this.round = null // game stop.No more click
+        //     this.gameStatus = 'end'
+        //     console.log('game end. winner is', this.player1.name)
+        //     return
+        // }
     }
     this.render = () => DOM.render(this)
     this.addEvent = () => {
@@ -30,7 +44,7 @@ function Game() {
         const nodeList = document.querySelectorAll('.enemyCell')
         nodeList.forEach(node => {
             node.addEventListener('click', () => {
-                console.log('player 1 click on player 2"s board')
+                console.log('player 1 clicks on player 2\'s board')
 
                 let x = parseInt(node.getAttribute('colidx'))
                 let y = parseInt(node.getAttribute('rowidx'))
@@ -50,7 +64,7 @@ function Game() {
         const nodeList2 = document.querySelectorAll('.myCell')
         nodeList2.forEach(node => {
             node.addEventListener('click', () => {
-                console.log('player 2 click on player 1"s board')
+                console.log('player 2 clicks on player 1\'s board')
                 let x = parseInt(node.getAttribute('colidx'))
                 let y = parseInt(node.getAttribute('rowidx'))
                 if (this.round === this.player2) {
@@ -78,13 +92,27 @@ function Game() {
         // cell.click()
         await setTimeout(() => cell.click(), 100);
     }
-
-    // this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
-    // this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
-
-    // this.player2.gameboard.placeShip([1, 1], 'horizontal', 3)
-    // this.player2.gameboard.placeShip([3, 8], 'horizontal', 4)
-
+    this.initShipAI = () => {
+        if (!this.player2.isAi) return null
+        this.player2.placeRandomShips([5, 4, 3, 3, 2])
+    }
+    this.addEventGameBtn = () => {
+        document.querySelector('#startBtn').addEventListener('click', () => {
+            if (this.player1.gameboard.allShip.length < 5) {
+                alert('Please place all 5 ships before start')
+            } else if (this.gameStatus === 'before-start') {
+                console.log('Game starting...')
+                DOM.updateMsg('')
+                this.round = this.player1
+                this.gameStatus = 'playing'
+                this.initShipAI()
+                this.render()
+                this.addEvent()
+            }
+        })
+        document.querySelector('#resetBtn')
+    }
+    this.addEventGameBtn()
     this.render()
     this.addEvent()
     DRAG_MODULE.initialise(this)

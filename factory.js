@@ -97,6 +97,17 @@ function Player({ name, isAi }) {
         // console.log(x, y, 'not repeated')
         return [x, y]
     }
+    this.placeRandomShips = (arr) => {
+        arr.forEach(size => {
+            while (true) {
+                let x = Math.floor(Math.random() * 10)
+                let y = Math.floor(Math.random() * 10)
+                let dir = Math.random() >= 0.5 ? 'horizontal' : 'vertical'
+                let result = this.gameboard.placeShip([x, y], dir, size)
+                if(result) break;
+            }
+        })
+    }
 }
 
 function coordToBoard(coord) {
