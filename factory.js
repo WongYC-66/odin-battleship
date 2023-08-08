@@ -22,11 +22,12 @@ function GameBoard() {
     this.missedAttack = []
     this.correctAttack = []
     this.placeShip = (coord, dir, size) => {
+        // console.log(coord, dir, size)
         let [rowIdx, colIdx] = coordToBoard(coord)
         const newShip = new Ship(size, 0, false)
         if (dir == 'horizontal') {
             // console.log('placing horizontally')
-            if (colIdx + size - 1 > MAX_COL) return // console.log('Cannot place here, boundary')
+            if (colIdx + size - 1 > MAX_COL) return false// console.log('Cannot place here, boundary')
             let rowCell = this.board[rowIdx].slice(colIdx, colIdx + size)
             let isEmpty = rowCell.every(cell => cell === ' ')
             if (!isEmpty) return console.log('Cannot. Other ship is here.')
@@ -35,7 +36,7 @@ function GameBoard() {
             }
         } else if (dir == 'vertical') {
             // console.log('placing vertically')
-            if (rowIdx + size - 1 > MAX_ROW) return // console.log('Cannot place here, boundary')
+            if (rowIdx + size - 1 > MAX_ROW) return false // console.log('Cannot place here, boundary')
             let colCell = []
             for (let i = rowIdx; i < rowIdx + size; i++) {
                 colCell.push(this.board[i][colIdx])
@@ -47,6 +48,7 @@ function GameBoard() {
             }
         }
         this.allShip.push(newShip)
+        return true
 
     }
     this.receiveAttack = (coord) => {

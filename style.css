@@ -49,6 +49,10 @@ h1 {
     background-color: yellow;
 }
 
+.myCell.before-place {
+    background-color: aqua;
+}
+
 .myCell.miss-attacked {
     background-color: rgb(130, 123, 123);
 }
@@ -79,13 +83,14 @@ h1 {
     background-color: orangered;
 }
 
-.dragDiv{
+.dragDiv {
     /*  */
     display: flex;
     gap: 30px;
     justify-content: flex-start;
     align-items: center;
 }
+
 .dragDiv .length5 {
     width: 170px;
     height: 50px;
@@ -104,6 +109,12 @@ h1 {
     height: 30px;
 }
 
+.dragDiv img{
+    transform: rotate(90deg);
+}
+.dragDiv img.horizontal{
+    transform: rotate(0);
+}
 
 
 footer {

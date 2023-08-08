@@ -79,15 +79,15 @@ function Game() {
         await setTimeout(() => cell.click(), 100);
     }
 
-    this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
-    this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
+    // this.player1.gameboard.placeShip([1, 1], 'horizontal', 3)
+    // this.player1.gameboard.placeShip([3, 8], 'horizontal', 4)
 
-    this.player2.gameboard.placeShip([1, 1], 'horizontal', 3)
-    this.player2.gameboard.placeShip([3, 8], 'horizontal', 4)
+    // this.player2.gameboard.placeShip([1, 1], 'horizontal', 3)
+    // this.player2.gameboard.placeShip([3, 8], 'horizontal', 4)
 
     this.render()
     this.addEvent()
-    DRAG_MODULE.initialise()
+    DRAG_MODULE.initialise(this)
 }
 
 function coordToBoard(coord) {
