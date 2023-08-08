@@ -11,7 +11,7 @@ function initialise(game) {
     */
 
     let div = document.querySelector('.dragDiv')
-    div.innerHTML = ''
+    div.innerHTML = '<p>Double click image to switch horizontal / vertical</p>'
     let img1 = createImgWithSrc('./img/size5.png', 'length5', 5, 'horizontal')
     let img2 = createImgWithSrc('./img/size4.png', 'length4', 4, 'horizontal')
     let img3 = createImgWithSrc('./img/size3.png', 'length3', 3, 'horizontal')
