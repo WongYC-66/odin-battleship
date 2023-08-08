@@ -84,7 +84,7 @@ function Game() {
     this.addEventGameBtn = () => {
         document.querySelector('#startBtn').addEventListener('click', () => {
             if (this.player1.gameboard.allShip.length < 5) {
-                alert('Please place all 5 ships before start')
+                alert('Please place all 5 ships before start, by drag-and-drop')
             } else if (this.gameStatus === 'before-start') {
                 console.log('Game starting...')
                 DOM.updateMsg('')
