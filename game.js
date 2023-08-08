@@ -15,7 +15,7 @@ function Game() {
         [this.player1, this.player2].forEach(p => {
             if (this.gameStatus == 'end') return
             if (p.gameboard.allSunk()) {
-                let opponent = p === this.player1 ? player2 : this.player1
+                let opponent = p === this.player1 ? this.player2 : this.player1
                 DOM.updateMsg(`Winner : ${opponent.name}`)
                 this.round = null // game stop.No more click
                 this.gameStatus = 'end'

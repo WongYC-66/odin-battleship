@@ -82,13 +82,31 @@ function Player({ name, isAi }) {
     this.gameboard = new GameBoard()
     // this.attackingIndex = []
     this.isAi = isAi
-    this.generateAIMove = (player) => {
+    this.generateAIMove = (opponent) => {
         if (!this.isAi) return
         let x, y,
-            history = [...player.gameboard.correctAttack, ...player.gameboard.missedAttack]
+            history = [...opponent.gameboard.correctAttack, ...opponent.gameboard.missedAttack],
+            nextPossible = []
+        // use previous success attack to generate next posible move
+        opponent.gameboard.correctAttack.forEach(coord => {
+            nextPossible.push([coord[0], coord[1] - 1]) // up
+            nextPossible.push([coord[0], coord[1] + 1]) // down
+            nextPossible.push([coord[0] - 1, coord[1]]) // left
+            nextPossible.push([coord[0] + 1, coord[1]]) // right
+        })
+        nextPossible = nextPossible.filter(coord => {
+            return (coord[0] >= 0 && coord[0] <= 9) && (coord[1] >= 0 && coord[1] <= 9)
+        })
         while (true) {
-            x = Math.floor(Math.random() * 10)
-            y = Math.floor(Math.random() * 10)
+            console.log(nextPossible.length)
+            if (nextPossible.length > 0) {
+                let coord = nextPossible.pop()
+                x = coord[0]
+                y = coord[1]
+            } else {
+                x = Math.floor(Math.random() * 10)
+                y = Math.floor(Math.random() * 10)
+            }
             let isRepeated = history.some(his => his[0] === x && his[1] === y)
             if (!isRepeated) break
             // console.log(x, y, 'is repeated')
@@ -104,7 +122,7 @@ function Player({ name, isAi }) {
                 let y = Math.floor(Math.random() * 10)
                 let dir = Math.random() >= 0.5 ? 'horizontal' : 'vertical'
                 let result = this.gameboard.placeShip([x, y], dir, size)
-                if(result) break;
+                if (result) break;
             }
         })
     }
