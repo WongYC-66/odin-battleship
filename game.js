@@ -23,20 +23,6 @@ function Game() {
                 return
             }
         })
-        // if (this.player1.gameboard.allSunk()) {
-        //     DOM.updateMsg(`Winner : ${this.player2.name}`)
-        //     this.round = null // game stop.No more click
-        //     this.gameStatus = 'end'
-        //     console.log('game end. winner is', this.player2.name)
-        //     return
-        // }
-        // if (this.player2.gameboard.allSunk()) {
-        //     DOM.updateMsg(`Winner : ${this.player1.name}`)
-        //     this.round = null // game stop.No more click
-        //     this.gameStatus = 'end'
-        //     console.log('game end. winner is', this.player1.name)
-        //     return
-        // }
     }
     this.render = () => DOM.render(this)
     this.addEvent = () => {
@@ -45,7 +31,6 @@ function Game() {
         nodeList.forEach(node => {
             node.addEventListener('click', () => {
                 console.log('player 1 clicks on player 2\'s board')
-
                 let x = parseInt(node.getAttribute('colidx'))
                 let y = parseInt(node.getAttribute('rowidx'))
                 if (this.round === this.player1) {
@@ -110,7 +95,6 @@ function Game() {
                 this.addEvent()
             }
         })
-        document.querySelector('#resetBtn')
     }
     this.addEventGameBtn()
     this.render()

@@ -35,11 +35,11 @@ function addImgEvent() {
         el.addEventListener('dragend', function (e) {
             if(dropResult){
                 e.target.style.visibility = 'hidden'
+                dropResult = false
             }
         })
         // rotate horizontal -> vertical
         el.addEventListener('dblclick', function(){
-            console.log(this)
             this.classList.toggle('horizontal')
         })
     })
